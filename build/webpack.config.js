@@ -91,7 +91,7 @@ if (!__TEST__) {
 // ------------------------------------
 webpackConfig.module.preLoaders = [{
   test: /\.(js|jsx)$/,
-  loader: 'eslint'  ,
+  loader: 'eslint',
   exclude: /node_modules/
 }]
 
@@ -116,20 +116,20 @@ webpackConfig.module.loaders = [{
       : ['es2015', 'react', 'stage-0']
   }
 },
-{
-  test: /\.json$/,
-  loader: 'json'
-}]
+  {
+    test: /\.json$/,
+    loader: 'json'
+  }]
 
 // Styles
 const cssLoader = !config.compiler_css_modules
   ? 'css?sourceMap'
   : [
-    'css?modules',
-    'sourceMap',
-    'importLoaders=1',
-    'localIdentName=[name]__[local]___[hash:base64:5]'
-  ].join('&')
+  'css?modules',
+  'sourceMap',
+  'importLoaders=1',
+  'localIdentName=[name]__[local]___[hash:base64:5]'
+].join('&')
 
 webpackConfig.module.loaders.push({
   test: /\.scss$/,
@@ -142,6 +142,15 @@ webpackConfig.module.loaders.push({
   ]
 })
 
+webpackConfig.module.loaders.push({
+  test: /\.less$/,
+  loaders: [
+    'style',
+    cssLoader,
+    'postcss',
+    'less?sourceMap'
+  ]
+})
 webpackConfig.module.loaders.push({
   test: /\.css$/,
   include: /src/,
@@ -197,13 +206,22 @@ webpackConfig.postcss = [
 // File loaders
 /* eslint-disable */
 webpackConfig.module.loaders.push(
-  { test: /\.woff(\?.*)?$/,  loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },
-  { test: /\.woff2(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
-  { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
-  { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
-  { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  {
+    test: /\.woff(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff'
+  },
+  {
+    test: /\.woff2(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2'
+  },
+  {test: /\.otf(\?.*)?$/, loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype'},
+  {
+    test: /\.ttf(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream'
+  },
+  {test: /\.eot(\?.*)?$/, loader: 'file?prefix=fonts/&name=[path][name].[ext]'},
+  {test: /\.svg(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml'},
+  {test: /\.(png|jpg)$/, loader: 'url?limit=8192'}
 )
 /* eslint-enable */
 

@@ -5,6 +5,7 @@ import { createHistory } from 'history'
 import routes from './routes'
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
+import 'antd/lib/index.css'
 
 const historyConfig = {basename: __BASENAME__}
 const history = useRouterHistory(createHistory)(historyConfig)

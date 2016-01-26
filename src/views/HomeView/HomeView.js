@@ -12,20 +12,20 @@ import classes from './HomeView.scss'
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-	counter: state.counter
+  counter: state.counter
 })
-export class HomeView extends React.Component{
-	static propTypes = {
-		counter: PropTypes.number.isRequired,
-		doubleAsync: PropTypes.func.isRequired,
-		increment: PropTypes.func.isRequired
-	};
+export class HomeView extends React.Component {
+  static propTypes = {
+    counter: PropTypes.number.isRequired,
+    doubleAsync: PropTypes.func.isRequired,
+    increment: PropTypes.func.isRequired
+  };
 
-	render() {
-		return (
-			<CustomMenu />
-		)
-	}
+  render() {
+    return (
+      <CustomMenu />
+    )
+  }
 }
 
 export default connect(mapStateToProps, counterActions)(HomeView)
