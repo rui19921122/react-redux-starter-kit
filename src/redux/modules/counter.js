@@ -17,21 +17,21 @@ export const increment = createAction(COUNTER_INCREMENT, (value = 1) => value)
 // you'd probably want to dispatch an action of COUNTER_DOUBLE and let the
 // reducer take care of this logic.
 export const doubleAsync = () => {
-  return (dispatch, getState) => {
-    setTimeout(() => {
-      dispatch(increment(getState().counter))
-    }, 1000)
-  }
+	return (dispatch, getState) => {
+		setTimeout(() => {
+			dispatch(increment(getState().counter))
+		}, 1000)
+	}
 }
 
 export const actions = {
-  increment,
-  doubleAsync
+	increment,
+	doubleAsync
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default handleActions({
-  [COUNTER_INCREMENT]: (state, { payload }) => state + payload
-}, 1)
+	[COUNTER_INCREMENT]: (state, { payload }) => state + payload
+}, [1, 2])
