@@ -18,3 +18,4 @@ ReactDOM.render(
   <Root history={history} routes={routes} store={store}/>,
   document.getElementById('root')
 )
+

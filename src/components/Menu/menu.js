@@ -4,29 +4,48 @@
  */
 import {Menu, Icon} from 'antd'
 import React from 'react'
+import {Link} from 'react-router'
+import './menu.css'
 export default class CustomMenu extends React.Component {
-	extract_menu(obj) {
-		let r = '';
-		for (let i in obj) {
-			r = r + i.name
-		}
-		return r
-	}
+  //todo 解决链接第一次点击不跳转问题
 
-	return_menu(obj, index) {
-		if (obj.type === 'single') {
-			return <Menu.Item key={index}>obj.name</Menu.Item>
-		}
-	}
+  static processSingle(single, index) {
+    return <Menu.Item key={single.key}><Link to={single.href}>{single.name}</Link></Menu.Item>
+  };
 
-	render() {
-		return (
-			<Menu
-				mode="horizontal"
-				defaultSelectedKeys="1"
-			>
-				<Menu.Item>{this.extract_menu(this.props.menu)}</Menu.Item>
-			</Menu>
-		)
-	}
+  static processMultiChildren(single, index) {
+    return <Menu.Item key={single.key}>
+      <Link to={single.href}>{single.name}</Link>
+    </Menu.Item>
+  };
+
+  static processMulti(multi, index) {
+    return (<Menu.SubMenu title={multi.name} key={index+1}>
+      {multi.children.map(CustomMenu.processMultiChildren)}
+    </Menu.SubMenu>);
+  };
+
+  static process(inner, index) {
+    if (inner.type === 'single') {
+      return CustomMenu.processSingle(inner, index)
+    } else {
+      return CustomMenu.processMulti(inner, index)
+    }
+  }
+
+
+  render() {
+    return (
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={[this.props._menu]}
+      >
+        {this.props.menu.map(CustomMenu.process)}
+      </Menu>
+    )
+  }
 }
+CustomMenu.propTypes = {
+  menu: React.PropTypes.array.isRequired,
+  _menu: React.PropTypes.string
+};

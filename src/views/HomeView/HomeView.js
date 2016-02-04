@@ -5,6 +5,7 @@ import DuckImage from './Duck.jpg'
 import CustomMenu from '../../components/Menu/menu'
 import classes from './HomeView.scss'
 import {actions } from '../../redux/modules/menu'
+import {Row,Col} from 'antd'
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -12,21 +13,22 @@ import {actions } from '../../redux/modules/menu'
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-	menu: state.menu
+  menu: state.menu
 });
 export class HomeView extends React.Component {
-	static propTypes = {
-		counter: PropTypes.array.isRequired,
-		menu: PropTypes.object.isRequired,
-		doubleAsync: PropTypes.func.isRequired,
-		increment: PropTypes.func.isRequired
-	};
+  static propTypes = {
+    menu: PropTypes.array.isRequired
+  };
 
-	render() {
-		return (
-			<CustomMenu menu={this.props.menu}/>
-		)
-	}
+  render() {
+    return (
+      <div>
+        <Row>
+          <Col span="5">
+            <CustomMenu menu={this.props.menu}/></Col>
+        </Row>
+      </div>
+    )
+  }
 }
-
 export default connect(mapStateToProps, {actions})(HomeView)
