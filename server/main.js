@@ -6,10 +6,12 @@ import historyApiFallback from 'koa-connect-history-api-fallback'
 import serve from 'koa-static'
 import _debug from 'debug'
 import config from '../config'
+import routes from './routes'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
+
 
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic
@@ -26,7 +28,10 @@ if (config.env === 'development') {
 
   // Enable webpack-dev and webpack-hot middleware
   const { publicPath } = webpackConfig.output
-
+  if (config.proxy && config.proxy.enabled) {
+    const options = config.proxy.options
+    app.use(convert(require('./middleware/webpack-proxy')(options)))
+  }
   app.use(require('./middleware/webpack-dev')(compiler, publicPath))
   app.use(require('./middleware/webpack-hmr')(compiler))
 

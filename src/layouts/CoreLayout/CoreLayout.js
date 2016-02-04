@@ -18,7 +18,7 @@ function CoreLayout({ children }) {
       <Row>
         <Col span="24" className="banner">
           <span className="header-middle">
-          首页标题</span>
+          上海铁路局芜湖东站安全管理信息系统</span>
         </Col></Row>
       < div
         className='view-container'>

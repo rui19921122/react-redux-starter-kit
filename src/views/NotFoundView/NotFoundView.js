@@ -6,9 +6,9 @@ export class NotFoundView extends React.Component {
   render() {
     return (
       <div className='container text-center'>
-        <h1>This is a demo 404 page!</h1>
+        <h1>抱歉，您输入的地址未找到</h1>
         <hr />
-        <Link to='/'>Back To Home View</Link>
+        <Link to='/'>返回首页</Link>
       </div>
     )
   }
