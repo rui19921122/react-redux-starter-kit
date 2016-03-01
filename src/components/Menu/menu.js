@@ -5,8 +5,13 @@
 import {Menu, Icon} from 'antd'
 import React from 'react'
 import {Link} from 'react-router'
+import {getMenu} from '../../redux/modules/menu'
+
 export default class CustomMenu extends React.Component {
-	//todo 解决链接第一次点击不跳转问题
+	constructor(props) {
+		super(props);
+		props.dispatch(getMenu())
+	}
 
 
 	static processSingle(single, index) {
@@ -38,9 +43,9 @@ export default class CustomMenu extends React.Component {
 		return (
 			<Menu
 				mode="inline"
-				defaultSelectedKeys={[this.props._menu]}
+				defaultSelectedKeys={[this.props.menu._menu]}
 			>
-				{this.props.menu.map(CustomMenu.process)}
+				{this.props.menu.items.map(CustomMenu.process)}
 			</Menu>
 		)
 	}

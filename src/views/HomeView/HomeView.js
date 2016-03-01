@@ -13,22 +13,23 @@ import {Row,Col} from 'antd'
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  menu: state.menu
+	menu: state.menu
 });
 export class HomeView extends React.Component {
-  static propTypes = {
-    menu: PropTypes.array.isRequired
-  };
 
-  render() {
-    return (
-      <div>
-        <Row>
-          <Col span="5">
-            <CustomMenu menu={this.props.menu}/></Col>
-        </Row>
-      </div>
-    )
-  }
+	static propTypes = {
+		menu: PropTypes.array.isRequired
+	};
+
+	render() {
+		return (
+			<div>
+				<Row>
+					<Col span="5">
+						<CustomMenu {...this.props}/></Col>
+				</Row>
+			</div>
+		)
+	}
 }
-export default connect(mapStateToProps, {actions})(HomeView)
+export default connect(mapStateToProps)(HomeView)

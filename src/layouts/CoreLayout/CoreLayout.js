@@ -12,24 +12,24 @@ import {Row,Col} from 'antd'
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
 function CoreLayout({ children }) {
-  return (
-    < div
-      className='page-container'>
-      <Row>
-        <Col span="24" className="banner">
+	return (
+		< div
+			className='page-container'>
+			<Row>
+				<Col span="24" className="banner">
           <span className="header-middle">
-          上海铁路局芜湖东站安全管理信息系统</span>
-        </Col></Row>
-      < div
-        className='view-container'>
-        {children}
-      </div>
-    </div>
-  )
+          上海铁路局芜湖东站点名会系统</span>
+				</Col></Row>
+			< div
+				className='view-container'>
+				{children}
+			</div>
+		</div>
+	)
 }
 
 CoreLayout.propTypes = {
-  children: PropTypes.element
+	children: PropTypes.element
 }
 
 export default CoreLayout
