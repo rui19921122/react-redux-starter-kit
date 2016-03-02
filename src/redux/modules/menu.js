@@ -8,7 +8,6 @@ export const UPDATE_MENU = 'UPDATE_MENU';
 
 export let updateMenu = createAction(UPDATE_MENU, (i)=>i);
 
-
 export function getMenu() {
 	return (dispatch, getState) => {
 		let state = getState();
@@ -16,12 +15,12 @@ export function getMenu() {
 			return 0
 		}
 		return fetch('/api/menu/get-menu').then(response=> {
-			if (response.status == 200) {
-				dispatch(updateMenu(response.json))
-			} else {
-				location.href = '/login'
-			}
-		})
+      if (response.status != 200) {
+        location.href = '/login'
+      } else {
+        return response.json()
+      }
+    }).then(json=>dispatch(updateMenu(json)))
 	}
 }
 
