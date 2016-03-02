@@ -3,7 +3,7 @@
  */
 import {createAction,handleActions,applyMiddleware} from 'redux-actions'
 import {trunk} from 'redux-thunk'
-
+import { History } from 'react-router';
 export const UPDATE_MENU = 'UPDATE_MENU';
 
 export let updateMenu = createAction(UPDATE_MENU, (i)=>i);
@@ -15,9 +15,13 @@ export function getMenu() {
 		if (state.menu.get) {
 			return 0
 		}
-		return fetch('/api/menu/get-menu').then(response=>response.json()).then(json=> {
-			dispatch(updateMenu(json))
-		}).catch((e)=>console.log(e));
+		return fetch('/api/menu/get-menu').then(response=> {
+			if (response.status == 200) {
+				dispatch(updateMenu(response.json))
+			} else {
+				location.href = '/login'
+			}
+		})
 	}
 }
 
