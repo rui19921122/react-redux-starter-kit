@@ -3,7 +3,8 @@
  * Created by Administrator on 2016/3/2.
  */
 import {createAction,handleAction,handleActions} from 'redux-actions'
-import {message} from 'antd'
+import {message} from 'antd';
+import 'antd/lib/index.css';
 
 const BEGIN_UPDATE_CLASS_PLAN = 'BEGIN_UPDATE_CLASS_PLAN';
 const FINISH_UPDATE_CLASS_PLAN = 'FINISH_UPDATE_CLASS_PLAN';
@@ -16,19 +17,22 @@ export const date_picker_date_change = createAction(DATE_PICKER_DATE_CHANGE);
 export const get_class_from_server = (date) =>
 	(dispatch, state) => {
 		dispatch(begin_update_class_plan());
-		let _date = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay();
+		let _date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (date.getDate());
 		fetch('/api/class_plan/classPlan/' + _date).then(
 			(response) => {
-				switch (response.ok) {
-					case true:
+				switch (response.status) {
+					case 200:
 						response.json().then(json=>dispatch(finish_update_class_plan(json)));
 						break;
-					case false:
-						response.json().then(json=>dispatch(fail_update_class_plan(json)));
+					case 404:
+						response.json().then(json=>dispatch(fail_update_class_plan()));
 						break;
+					default:
+						message.error('出现未知错误，请与管理员联系')
+
 				}
 			}
-		).catch(message.error("出现错误，请检查您的网络连接"))
+		)
 	};
 
 
@@ -38,7 +42,7 @@ export default handleActions(
 			"use strict";
 			return Object.assign({}, state, {fetch: true})
 		},
-		DATE_PICKER_DATE_CHANGE: ({}, state, {payload})=> {
+		DATE_PICKER_DATE_CHANGE: (state, {payload})=> {
 			"use strict";
 			return Object.assign({}, state, {view_date: payload})
 		},

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import {Col,Row, DatePicker, Button} from 'antd'
-import ClassPlanTable from '../../components/ClassPlan/addClassPlan'
+import ClassPlanTable from '../../components/ClassPlan/queryClassPlan'
 import '../../styles/core.scss'
 import {date_picker_date_change,get_class_from_server,begin_update_class_plan} from '../../redux/modules/class-plan'
 const mapStateToProps = (state) => ({
