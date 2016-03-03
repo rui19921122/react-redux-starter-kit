@@ -10,7 +10,7 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import HomeView from 'views/HomeView/HomeView'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
 import Login from '../views/LoginIn/LoginIn'
-import AddClassPlan from 'views/ClassPlan/AddClassPlan'
+import AddClassPlan from '../views/ClassPlan/queryClassPlan'
 
 export default (
 	<Route path='/' component={CoreLayout}>

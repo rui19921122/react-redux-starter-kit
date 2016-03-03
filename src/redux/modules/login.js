@@ -22,7 +22,7 @@ export let login = (username, password)=>
 			}), credentials: 'include'
 		}).then((response=> {
 			if (response.status == 200) {
-				dispatch(login_sucess)
+				dispatch(login_sucess);
 				window.location.href='/'
 			}else{
 				return response.json()
