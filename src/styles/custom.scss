@@ -1,4 +1,12 @@
-.head-justify {
+.head-justify-first {
   margin-top:20px;
   margin-bottom: 20px;
+}
+
+.head-justify-not-first {
+  margin-bottom: 20px;
+}
+
+.justify-table td, th {
+  text-align: center;
 }

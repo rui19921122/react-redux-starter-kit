@@ -11,6 +11,7 @@ import HomeView from 'views/HomeView/HomeView'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
 import Login from '../views/LoginIn/LoginIn'
 import AddClassPlan from '../views/ClassPlan/queryClassPlan'
+import ManageWorker from '../views/Worker/manageWorker'
 
 export default (
 	<Route path='/' component={CoreLayout}>
@@ -18,6 +19,7 @@ export default (
 		<Route path='/404' component={NotFoundView}/>
 		<Route path="/login" component={Login}/>
 		<Route path="/add-class-plan" component={AddClassPlan}/>
+    <Route path="/manage-worker" component={ManageWorker}/>
 		<Redirect from='*' to='/404'/>
 	</Route>
 )

@@ -3,10 +3,12 @@ import { routeReducer as router } from 'redux-simple-router'
 import menu from './modules/menu'
 import login from './modules/login'
 import class_plan from './modules/class-plan'
+import worker from './modules/worker'
 
 export default combineReducers({
 	menu,
 	router,
 	login,
-  class_plan
+  class_plan,
+  worker
 })
