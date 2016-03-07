@@ -85,33 +85,9 @@ export default handleActions(
       return Object.assign({}, state, {cache_upload: payload})
     }
 
-	}, {
-		'header': [{
-			key: 'number',
-			title: '序号',
-			dataIndex: 'number',
-			width: '10%'
-		},
-			{
-				title: '名称',
-				dataIndex: 'style',
-				key: 'name',
-				width: '20%'
-			},
-			{
-				title: '内容',
-				dataIndex: 'content',
-				key: 'content',
-				width: '50%'
-			},
-			{
-				title: '涉及部门',
-				dataIndex: 'department',
-				key: 'department',
-				width: '20%'
-			}
-		],
-		'content': [
+  },
+  {
+    'content': [
 			{key: 1, number: 1, department: '测试部门', content: '测试数据', name: '测试'}
 		],
 		'fetch': false,

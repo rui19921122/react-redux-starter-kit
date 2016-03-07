@@ -75,13 +75,12 @@ class manageWorker extends React.Component {
       }
       },
       {
-        title: '替班', dataIndex: 'alter', key: 'ater', render(text, record){
+        title: '替班', dataIndex: 'alter', key: 'a;ter', render(text, record){
         if (record.alter) {
           return <span>是</span>
         }
       }
       },
-      {title: '替班', dataIndex: 'alter', key: 'alter'},
       {title: '班次', dataIndex: 'class_number', key: 'class_number'},
       {
         title: '操作', key: 'handle',

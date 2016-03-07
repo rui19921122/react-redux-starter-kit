@@ -4,11 +4,13 @@ import menu from './modules/menu'
 import login from './modules/login'
 import class_plan from './modules/class-plan'
 import worker from './modules/worker'
+import study from './modules/professional_study'
 
 export default combineReducers({
 	menu,
 	router,
 	login,
   class_plan,
-  worker
+  worker,
+  study
 })
