@@ -4,15 +4,15 @@
  */
 import {createAction,handleActions} from 'redux-actions'
 import {message} from 'antd'
-const UPDATE_PROFESSION_STUDY = 'UPDATE_PROFESSION_STUDY';
-let updateProfessionStudy = createAction(UPDATE_PROFESSION_STUDY);
+const UPDATE_ACCIDENT = 'UPDATE_ACCIDENT';
+let updateAccident = createAction(UPDATE_ACCIDENT);
 
-const BEGIN_UPDATE_STUDY = 'BEGIN_UPDATE_STUDY';
-let begin_update_study = createAction(BEGIN_UPDATE_STUDY);
-const FINISH_UPDATE_STUDY = 'FINISH_UPDATE_STUDY'
-let finish_update_study = createAction(FINISH_UPDATE_STUDY)
+const BEGIN_UPDATE = 'BEGIN_UPDATE';
+let begin_update = createAction(BEGIN_UPDATE);
+const FINISH_UPDATE = 'FINISH_UPDATE'
+let finish_update = createAction(FINISH_UPDATE)
 
-export function getStudy() {
+export function getAccident() {
 	"use strict";
 	return (dispatch, getState) => {
 		fetch('/api/study/get-unlearned-study/').then(
