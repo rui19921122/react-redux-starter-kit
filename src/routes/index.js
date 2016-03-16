@@ -14,6 +14,7 @@ import AddClassPlan from '../views/ClassPlan/queryClassPlan'
 import ManageWorker from '../views/Worker/manageWorker'
 import ManageProfessionalStudy from '../views/ProfessionalStudy/manageProfessionalStudy'
 import ManageAccident from '../views/Accident/manageAccident'
+import Begin from '../views/CallOver/BeginCallOver'
 
 export default (
 	<Route path='/' component={CoreLayout}>
@@ -24,6 +25,7 @@ export default (
 		<Route path="/manage-worker" component={ManageWorker}/>
 		<Route path="/manage-study" component={ManageProfessionalStudy}/>
 		<Route path="/manage-accident" component={ManageAccident}/>
+    <Route path="/begin" component={Begin}/>
 		<Redirect from='*' to='/404'/>
 	</Route>
 )

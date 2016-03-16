@@ -6,13 +6,15 @@ import class_plan from './modules/class-plan'
 import worker from './modules/worker'
 import study from './modules/professional_study'
 import accident from './modules/accident'
+import call_over from './modules/call-over'
 
 export default combineReducers({
-	menu,
-	router,
-	login,
-	class_plan,
-	worker,
-	study,
-	accident
+  menu,
+  router,
+  login,
+  class_plan,
+  worker,
+  study,
+  accident,
+  call_over
 })
