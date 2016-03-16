@@ -4,8 +4,8 @@
  */
 import React,{Component} from 'react'
 import {Table,Popconfirm} from 'antd'
-import {deleteStudy} from '../../redux/modules/professional_study'
-export default class ListProfessionStudyTable extends Component {
+import {deleteAccident} from '../../redux/modules/accident'
+export default class ListAccidentTable extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -13,7 +13,7 @@ export default class ListProfessionStudyTable extends Component {
 	deleteClicked(id) {
 		let self = this;
 		return function () {
-			self.props.dispatch(deleteStudy(id))
+			self.props.dispatch(deleteAccident(id))
 		}
 	}
 
@@ -103,7 +103,7 @@ export default class ListProfessionStudyTable extends Component {
 		return (
 			<Table columns={header}
 			       className='justify-table'
-			       dataSource={this.props.study.content}
+			       dataSource={this.props.accident.content}
 			       panigaton={false}
 			       bordered/>
 		)
