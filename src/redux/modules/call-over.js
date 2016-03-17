@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2016/3/16.
  */
-import {createAction,handleActions} from 'redux-actions'
+import {createAction, handleActions} from 'redux-actions'
 import _fetch from '../../components/Fetch/fetch'
 let begin_select = createAction("BEGIN_SELECT");
 let end_select = createAction("END_SELECT");
@@ -10,6 +10,7 @@ let reduce_unused = createAction("REDUCE_UNUSED");
 let commit_select = createAction("COMMIT_SELECT");
 let update_class_number = createAction("UPDATE_CLASS_NUMBER");
 let can_begin = createAction("CAN_BEGIN");
+let update_call_over_data = createAction("UPDATE_CALL_OVER_DATA");
 export const get_default_class_number = ()=>
   (dispatch, state) => {
     "use strict";
@@ -46,14 +47,7 @@ export const begin_call_over = ()=>
         if (response.status == 200) {
           response.json().then(
             (json=> {
-              let number = json.number;
-              if (number in [1, 2, 3, 4]) {
-                dispatch(update_class_number(json.number));
-                dispatch(can_begin(true))
-              }
-              if (number == false) {
-                dispatch(can_begin(false))
-              }
+              dispatch(update_call_over_data(json));
             }))
         }
       }
@@ -97,7 +91,11 @@ export default handleActions({
   CAN_BEGIN: (state, {payload})=> {
     "use strict";
     return Object.assign({}, state, {can_begin: payload})
-  }
+  },
+  UPDATE_CALL_OVER_DATA: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {data: payload})
+  },
 
 
-}, {used: {}, unused_cache: [], unused: [], select_visible: false, class_number: 0});
+}, {used: {}, unused_cache: [], unused: [], select_visible: false, class_number: 0, data: {}});
