@@ -40,7 +40,7 @@ export const begin_call_over = ()=>
     _fetch('/api/call_over/begin-call-over/',
       {
         method: 'post',
-        body: JSON.stringify({unused:unused,number:number})
+        body: JSON.stringify({unused: unused, number: number})
       }).then(
       (response)=> {
         if (response.status == 200) {
