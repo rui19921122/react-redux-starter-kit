@@ -1,4 +1,3 @@
-
 import WebpackDevMiddleware from 'webpack-dev-middleware'
 import applyExpressMiddleware from '../lib/apply-express-middleware'
 import _debug from 'debug'

@@ -2,6 +2,8 @@
  * Created by Administrator on 2016/3/16.
  */
 import {createAction, handleActions} from 'redux-actions'
+import {push} from 'react-router-redux'
+import {browserHistory} from 'react-router'
 import _fetch from '../../components/Fetch/fetch'
 let begin_select = createAction("BEGIN_SELECT");
 let end_select = createAction("END_SELECT");
@@ -11,6 +13,8 @@ let commit_select = createAction("COMMIT_SELECT");
 let update_class_number = createAction("UPDATE_CLASS_NUMBER");
 let can_begin = createAction("CAN_BEGIN");
 let update_call_over_data = createAction("UPDATE_CALL_OVER_DATA");
+let can_upload_image = createAction("CAN_UPLOAD_IMAGE");
+let begin = createAction("BEGIN");
 export const get_default_class_number = ()=>
   (dispatch, state) => {
     "use strict";
@@ -48,6 +52,7 @@ export const begin_call_over = ()=>
           response.json().then(
             (json=> {
               dispatch(update_call_over_data(json));
+              dispatch(push('/call-over'))
             }))
         }
       }
@@ -60,7 +65,9 @@ export let actions = {
   reduce_unused,
   commit_select,
   update_class_number,
-  begin_call_over
+  begin_call_over,
+  can_upload_image,
+  begin
 };
 export default handleActions({
   BEGIN_SELECT: (state, {payload})=> {
@@ -96,6 +103,23 @@ export default handleActions({
     "use strict";
     return Object.assign({}, state, {data: payload})
   },
+  CAN_UPLOAD_IMAGE: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {can_upload_image: payload})
+  },
+  BEGIN: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {begin: payload})
+  },
 
 
-}, {used: {}, unused_cache: [], unused: [], select_visible: false, class_number: 0, data: {}});
+}, {
+  used: {},
+  unused_cache: [],
+  unused: [],
+  begin: false,
+  can_upload_image: false,
+  select_visible: false,
+  class_number: 0,
+  data: {}
+});

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { routeReducer as router } from 'redux-simple-router'
+import { routerReducer as router } from 'react-router-redux'
 import menu from './modules/menu'
 import login from './modules/login'
 import class_plan from './modules/class-plan'
@@ -9,8 +9,8 @@ import accident from './modules/accident'
 import call_over from './modules/call-over'
 
 export default combineReducers({
-  menu,
   router,
+  menu,
   login,
   class_plan,
   worker,
