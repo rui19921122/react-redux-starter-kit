@@ -58,6 +58,8 @@ export const begin_call_over = ()=>
       }
     )
   };
+let update_table_font = createAction("UPDATE_TABLE_FONT")
+let update_p_font = createAction("UPDATE_P_FONT")
 export let actions = {
   begin_select,
   end_select,
@@ -67,7 +69,9 @@ export let actions = {
   update_class_number,
   begin_call_over,
   can_upload_image,
-  begin
+  begin,
+  update_table_font,
+  update_p_font,
 };
 export default handleActions({
   BEGIN_SELECT: (state, {payload})=> {
@@ -111,6 +115,22 @@ export default handleActions({
     "use strict";
     return Object.assign({}, state, {begin: payload})
   },
+  UPDATE_P_FONT: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {
+      options: {'p_font': payload, 'table_font': state.options.table_font}
+    })
+  },
+  UPDATE_TABLE_FONT: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {
+      // todo 寻找一种方法，简单的更新options，而不是脏检查
+      options: {'table_font': payload, 'p_font': state.options.p_font}
+    })
+  },
+
+
+
 
 
 }, {
@@ -121,5 +141,9 @@ export default handleActions({
   can_upload_image: false,
   select_visible: false,
   class_number: 0,
-  data: {}
+  data: {},
+  options: {
+    p_font: 2,
+    table_font: 2
+  }
 });

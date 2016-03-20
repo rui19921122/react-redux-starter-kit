@@ -38,6 +38,7 @@ class ClassPlanTable extends React.Component {
 
 
   render() {
+    let font_size = this.props.font_size + 'pt';
     let get_parent = (origin, child)=> {
         let parent = [];
         let first = false;
@@ -86,9 +87,7 @@ class ClassPlanTable extends React.Component {
         dataIndex: 'content',
         key: 'content',
         width: '70%',
-        props: {
-          style: {'text-align': 'left'}
-        }
+        style: {'font-size': '20pt'}
       }
       ,
       {

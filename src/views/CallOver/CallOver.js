@@ -3,7 +3,7 @@
  * Created by Administrator on 2016/3/16.
  */
 import React, {Component} from 'react'
-import {Col, Row, Table, Button, Transfer, Select, Modal, QueueAnim} from 'antd'
+import {Col, Row, Table, Button, Transfer, Select, Modal, Slider, Affix} from 'antd'
 import ClassPlanTable from './ClassPlanDisplay'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
@@ -35,7 +35,7 @@ class CallOver extends Component {
     navigator.mediaDevices.getUserMedia(videoObj).then(
       stream=> {
         video.src = window.URL.createObjectURL(stream);
-        video.play()
+        video.play();
         this.props.dispatch(call_over_actions.can_upload_image(true))
       }
     ).catch(
@@ -76,41 +76,108 @@ class CallOver extends Component {
     )
   }
 
-  get_inner_content() {
-    switch (this.props.current_display) {
-      case 'class-plan':
-        return (<div>
-            <Row type="flex" justify="center">
-              <Col>
-                <h1>班计划</h1>
-              </Col>
-            </Row>
-            <Row type="flex" justify="center">
-              <Col span="23">
-                <ClassPlanTable class_plan={this.props.call_over.data.class_plan}/>
-              </Col>
-            </Row>
-          </div>
-        );
-      case 'study':
-        return (<div>
-            <Row type="flex" justify="center">
-              <Col>
-                <h1>业务学习</h1>
-              </Col>
-            </Row>
-            <Row type="flex" justify="center">
-              <Col span="23">
-                <ClassPlanTable class_plan={this.props.call_over.data.class_plan}/>
-              </Col>
-            </Row>
-          </div>
-        );
-    }
+  display_study(obj) {
+    return (<div>
+        <Row type="flex" justify="center">
+          <Col>
+            <h2 style={{fontSize:(this.props.call_over.options.p_font + 1) + 'em'}}>业务知识学习</h2>
+          </Col>
+        </Row>
+        <Row type="flex" justify="center">
+          <Col span="20" style={{fontSize:this.props.call_over.options.p_font + 'em'}}>
+            {obj.map(
+              (key, value, index)=> {
+                return <p>{key.content}</p>
+              }
+            )}
+          </Col>
+        </Row>
+      </div>
+    );
   }
 
-  handleNextClick() {
+  display_accident(obj) {
+    return (<div>
+        <Row type="flex" justify="center">
+          <Col>
+            <h2 style={{fontSize:(this.props.call_over.options.p_font + 1) + 'em'}}>事故案例学习</h2>
+          </Col>
+        </Row>
+        <Row type="flex" justify="center">
+          <Col span="20" style={{fontSize:this.props.call_over.options.p_font + 'em'}}>
+            {obj.map(
+              (key, value, index)=> {
+                return <p>{key.content}</p>
+              }
+            )}
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 
+  display_class_plan(obj) {
+        return (<div>
+            <Row type="flex" justify="center">
+              <Col>
+                <h2 style={{fontSize:(this.props.call_over.options.table_font + 1) + 'em'}}>班计划</h2>
+              </Col>
+            </Row>
+            <Row type="flex" justify="center">
+              <Col span="20">
+                <ClassPlanTable class_plan={obj} font_size={this.props.call_over.options.table_font}/>
+              </Col>
+            </Row>
+          </div>
+        );
+  }
+
+  get_inner_content() {
+    let data = this.props.call_over.data;
+    return (
+      <div className="call-over-display">
+        {this.display_class_plan(data['class_plan'])}
+        {this.display_accident(data['accident'])}
+        {this.display_study(data['study'])}
+      </div>
+    );
+  }
+
+  handleSliderTableUpdate(v) {
+    this.props.dispatch(call_over_actions.update_table_font(v))
+  }
+
+  handleSliderPUpdate(v) {
+    this.props.dispatch(call_over_actions.update_p_font(v))
+  }
+
+  render_video() {
+    let video_panel;
+    if (this.props.call_over.can_upload_image) {
+      video_panel = <Row>
+        <Col>
+          <video id="video" width={width} height={width}
+                 style={{position:'fixed'}} key="video"/>
+        </Col></Row>
+    } else {
+      video_panel = <span style={{fontSize:'15px',color:'red'}}>未发现摄像头</span>
+    }
+
+    return (<Row type="flex" jusitfy="end">
+      <Col span="2">
+        <Affix offset={75}>
+          <div>{video_panel}</div>
+          <div><span>表格字体大小</span>
+            <Slider defaultValue={this.props.call_over.options.table_font}
+                    onChange={this.handleSliderTableUpdate.bind(this)}
+                    min={1}
+                    max={10}/></div>
+          <div><span>段落字体大小</span>
+            <Slider defaultValue={this.props.call_over.options.p_font}
+                    onChange={this.handleSliderPUpdate.bind(this)}
+                    min={1}
+                    max={10}/></div>
+        </Affix></Col></Row>)
   }
 
   get_call_over_state() {
@@ -120,21 +187,17 @@ class CallOver extends Component {
     let inner_width = (window_width - 200) + 'px';
     return (
       <div>
-        <Row>
-          <Col>
-            <video id="video" width={width} height={width}
-                   style={{position:'fixed'}} key="video"/>
-          </Col></Row>
+        {this.render_video()}
         <Row style={{width:inner_width,marginLeft:'100px'}}>
           {this.get_inner_content()}
         </Row>
         <Row type="flex" justify="center">
           <Col>
-            <Button onClick={this.handleNextClick.bind(this)}>
+            <Button>
+              结束点名
             </Button>
           </Col>
         </Row>
-
       </div>
     )
   }
