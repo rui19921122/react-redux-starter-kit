@@ -21,6 +21,10 @@ class CallOver extends Component {
 		this.buildVideo()
 	}
 
+	canvas() {
+		return <canvas id="canvas" style={{display:'hidden'}} key="canvas"/>
+	}
+
 	buildVideo() {
 		let video = document.getElementById("video");
 		let videoObj = {"video": true};

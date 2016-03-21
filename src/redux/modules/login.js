@@ -5,6 +5,7 @@
 import {createAction,handleAction,handleActions} from 'redux-actions'
 import {message} from 'antd'
 import _fetch from '../../components/Fetch/fetch'
+import {push} from 'react-router-redux'
 const BEGIN_LOGIN = 'BEGIN_LOGIN';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 let begin_login = createAction(BEGIN_LOGIN);
@@ -25,7 +26,7 @@ export let login = (username, password)=>
 					switch (response.status) {
 						case 200:
 							dispatch(login_sucess);
-							window.location.href = '/';
+							dispatch(push('/'));
 							break;
 						default:
 							response.json().then(json=> {

@@ -16,6 +16,7 @@ let update_call_over_data = createAction("UPDATE_CALL_OVER_DATA");
 let can_upload_image = createAction("CAN_UPLOAD_IMAGE");
 let begin = createAction("BEGIN");
 let end = createAction("END")
+let update_call_over_number = createAction("CALL_OVER_NUMBER");
 export const get_default_class_number = ()=>
 	(dispatch, state) => {
 		"use strict";
@@ -52,7 +53,8 @@ export const begin_call_over = ()=>
 				if (response.status == 200) {
 					response.json().then(
 						(json=> {
-							dispatch(update_call_over_data(json));
+							dispatch(update_call_over_data(json.data));
+							dispatch(update_call_over_number(json.pk));
 							dispatch(push('/call-over'))
 						}))
 				}
@@ -125,6 +127,12 @@ export default handleActions({
 		"use strict";
 		return Object.assign({}, state, {
 			options: {'p_font': payload, 'table_font': state.options.table_font}
+		})
+	},
+	CALL_OVER_NUMBER: (state, {payload})=> {
+		"use strict";
+		return Object.assign({}, state, {
+			options: {'p_font': payload, 'call_over_number': payload}
 		})
 	},
 	UPDATE_TABLE_FONT: (state, {payload})=> {
