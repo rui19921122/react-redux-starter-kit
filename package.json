@@ -70,6 +70,7 @@
     "history": "^2.0.0",
     "http-proxy": "^1.13.1",
     "imports-loader": "^0.6.5",
+    "inline-worker": "^1.0.0",
     "jquery": "^2.2.0",
     "koa": "^2.0.0-alpha.3",
     "koa-connect-history-api-fallback": "^0.3.0",

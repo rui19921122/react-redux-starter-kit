@@ -14,6 +14,7 @@ let update_class_number = createAction("UPDATE_CLASS_NUMBER");
 let can_begin = createAction("CAN_BEGIN");
 let update_call_over_data = createAction("UPDATE_CALL_OVER_DATA");
 let can_upload_image = createAction("CAN_UPLOAD_IMAGE");
+let can_upload_audio = createAction("CAN_UPLOAD_AUDIO");
 let begin = createAction("BEGIN");
 let end = createAction("END")
 let update_call_over_number = createAction("CALL_OVER_NUMBER");
@@ -61,9 +62,36 @@ export const begin_call_over = ()=>
 			}
 		)
 	};
+export const upload_image = (content)=>
+  (dispatch, getState) => {
+    "use strict";
+    let state = getState();
+    let call_over_number = state.call_over.call_over_number;
+    _fetch('/api/upload/call-over-image/' + call_over_number + '/',
+      {
+        method: 'post',
+        body: JSON.stringify({image: content})
+      })
+  };
+export const upload_audio = (content)=>
+  (dispatch, getState) => {
+    "use strict";
+    let state = getState();
+    let call_over_number = state.call_over.call_over_number;
+    console.log(content.size)
+    fetch('/api/upload/call-over-audio/' + call_over_number + '/',
+      {
+        method: 'post',
+        type: 'audio',
+        body: content,
+      })
+  };
+
 let update_table_font = createAction("UPDATE_TABLE_FONT")
 let update_p_font = createAction("UPDATE_P_FONT")
 export let actions = {
+  upload_audio,
+  upload_image,
 	begin_select,
 	end_select,
 	add_unused,
@@ -76,6 +104,7 @@ export let actions = {
 	end,
 	update_table_font,
 	update_p_font,
+  can_upload_audio
 };
 export default handleActions({
 	BEGIN_SELECT: (state, {payload})=> {
@@ -123,6 +152,10 @@ export default handleActions({
 		"use strict";
 		return Object.assign({}, state, {end: payload})
 	},
+  CAN_UPLOAD_AUDIO: (state, {payload})=> {
+    "use strict";
+    return Object.assign({}, state, {can_upload_audio: payload})
+  },
 	UPDATE_P_FONT: (state, {payload})=> {
 		"use strict";
 		return Object.assign({}, state, {
@@ -132,7 +165,7 @@ export default handleActions({
 	CALL_OVER_NUMBER: (state, {payload})=> {
 		"use strict";
 		return Object.assign({}, state, {
-			options: {'p_font': payload, 'call_over_number': payload}
+      'call_over_number': payload
 		})
 	},
 	UPDATE_TABLE_FONT: (state, {payload})=> {
@@ -150,12 +183,13 @@ export default handleActions({
 	unused: [],
 	begin: false,
 	can_upload_image: false,
+  can_upload_audio: false,
 	select_visible: false,
 	class_number: 0,
 	data: {},
 	options: {
-		p_font: 2,
-		table_font: 2
+    p_font: 1,
+    table_font: 1
 	},
-	end: false
+  end: false,
 });

@@ -8,6 +8,7 @@ import ClassPlanTable from './ClassPlanDisplay'
 import {connect} from 'react-redux'
 import {push} from 'react-router-redux'
 import {Link} from 'react-router'
+import Recorder from '../../components/Recorder/Recorder'
 import {actions as call_over_actions, get_default_class_number} from '../../redux/modules/call-over'
 const mapStateToProps = (state) => ({
 	call_over: state.call_over
@@ -17,25 +18,38 @@ class CallOver extends Component {
 		super(props);
 	}
 
+  update_photo() {
+    if (this.props.call_over.can_upload_image && this.props.call_over.begin) {
+      let canvas = document.getElementById('canvas');
+      let context = canvas.getContext('2d');
+      let video = document.getElementById('video');
+      context.drawImage(video, 0, 0);
+      canvas.toDataURL('image/png');
+      let image_data = canvas.toDataURL('image/png').substr(22);
+      this.props.dispatch(call_over_actions.upload_image(image_data))
+    } else {
+      console.log('can_upload_image为false，无需传输')
+    }
+  }
+
 	componentDidMount() {
-		this.buildVideo()
+    this.buildVideo();
+    setInterval(this.update_photo.bind(this), 20000)
 	}
 
-	canvas() {
-		return <canvas id="canvas" style={{display:'hidden'}} key="canvas"/>
-	}
+  static componentWillUnmount() {
+    clearInterval()
+  }
 
 	buildVideo() {
 		let video = document.getElementById("video");
-		let videoObj = {"video": true};
-		let errBack = function (error) {
-			console.log("Video capture error: ", error.name);
-			console.log(error)
-		};
+    let videoObj = {"video": true};
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		let getUserMedia = (navigator.getUserMedia ||
 		navigator.webkitGetUserMedia ||
 		navigator.mozGetUserMedia);
 		// Put video listeners into place
+    if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia(videoObj).then(
 			stream=> {
 				video.src = window.URL.createObjectURL(stream);
@@ -47,7 +61,17 @@ class CallOver extends Component {
 				alert('加载摄像头错误');
 				this.props.dispatch(call_over_actions.can_upload_image(false))
 			}
-		)
+    )
+    } else {
+      navigator.webkitGetUserMedia(videoObj, (stream)=> {
+        video.src = window.URL.createObjectURL(stream);
+        video.play();
+        this.props.dispatch(call_over_actions.can_upload_image(true))
+      }, (e)=> {
+        alert('加载摄像头错误');
+        this.props.dispatch(call_over_actions.can_upload_image(false))
+      })
+    }
 	}
 
 	handleFullScreenClick() {
@@ -57,6 +81,46 @@ class CallOver extends Component {
 		if (document.documentElement.webkitRequestFullScreen) {
 			document.documentElement.webkitRequestFullScreen()
 		}
+    let audioObj = {"audio": true};
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    let getUserMedia = (navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia);
+    let handleAudioStream = (stream) => {
+      this.props.dispatch(call_over_actions.can_upload_audio(true));
+      let audio_context = new AudioContext();
+      let input = audio_context.createMediaStreamSource(stream);
+      let recorder = new Recorder(input);
+      recorder.record();
+      setInterval(
+        ()=> {
+          try {
+            recorder.stop();
+            recorder.exportWAV((blob)=> {
+              this.props.dispatch(call_over_actions.upload_audio(blob));
+              console.log(blob);
+            }, 'audio/wav');
+            recorder.clear();
+            console.log('缓存已清除')
+          } catch (e) {
+            console.log(e)
+          }
+          recorder.record();
+        }
+        , 60000)
+    };
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia(audioObj).then(
+        stream=> {
+          handleAudioStream(stream)
+        }
+      )
+    } else {
+      navigator.webkitGetUserMedia(audioObj, (stream)=> {
+          handleAudioStream(stream)
+        },
+        (e)=>console.log(e))
+    }
 		this.props.dispatch(call_over_actions.begin(true))
 	}
 
@@ -155,42 +219,28 @@ class CallOver extends Component {
 		this.props.dispatch(call_over_actions.update_p_font(v))
 	}
 
-	render_video() {
-		return (<Row type="flex" jusitfy="end">
-			<Col span="2">
-				<Affix offset={75}>
-					<div><span>表格字体大小</span>
-						<Slider defaultValue={this.props.call_over.options.table_font}
-						        onChange={this.handleSliderTableUpdate.bind(this)}
-						        min={1}
-						        max={10}/></div>
-					<div><span>段落字体大小</span>
-						<Slider defaultValue={this.props.call_over.options.p_font}
-						        onChange={this.handleSliderPUpdate.bind(this)}
-						        min={1}
-						        max={10}/></div>
-				</Affix></Col></Row>)
-	}
-
 	handleEndClick() {
-		console.log(555)
-		this.props.dispatch(call_over_actions.end(true))
+    this.props.dispatch(call_over_actions.end(true));
 		this.props.dispatch(call_over_actions.can_upload_image(false))
 	}
 
 	get_call_over_state() {
-		let affix = <Affix offset="180">
+    let affix = <Row type="flex">
+      <Col span="2"><Affix offset={180}>
+        <div><span>
+         录音设备状态:{this.props.call_over.can_upload_audio ? '录音中' : '异常'}
+       </span></div>
 			<div><span>表格字体大小</span>
 				<Slider defaultValue={this.props.call_over.options.table_font}
-				        onChange={this.handleSliderTableUpdate.bind(this)}
-				        min={1}
-				        max={10}/></div>
+                max={10}
+                onChange={this.handleSliderTableUpdate.bind(this)}
+        /></div>
 			<div><span>段落字体大小</span>
 				<Slider defaultValue={this.props.call_over.options.p_font}
-				        onChange={this.handleSliderPUpdate.bind(this)}
-				        min={1}
-				        max={10}/></div>
-		</Affix>;
+                max={10}
+                onChange={this.handleSliderPUpdate.bind(this)}
+        /></div>
+      </Affix></Col></Row>;
 		let width = 100;
 		let window_height = window.innerHeight;
 		let window_width = window.innerWidth;
@@ -198,24 +248,16 @@ class CallOver extends Component {
 		let video_panel;
 		if (this.props.call_over.can_upload_image) {
 			video_panel = <Row style={{position:'fixed'}}>
-				<Col span="2">
+        <Col>
 					<video id="video" width={width} height={width}
 					       key="video"/>
 				</Col>
 			</Row>
-		} else {
-			video_panel = <Row style={{position:'fixed'}}>
-				<Col span="2">
-					<span style={{fontSize:'15px',color:'red'}}>未发现摄像头</span>
-				</Col>
-			</Row>
-		}
+    }
 		return (
 			<div>
 				{video_panel}
-				<Row type="flex">
-					<Col span="2">
-						{affix}</Col></Row>
+        {affix}
 				<Row style={{width:inner_width,marginLeft:'100px'}}>
 					{this.get_inner_content()}
 				</Row>
@@ -242,13 +284,21 @@ class CallOver extends Component {
 	}
 
 	render() {
+    let contain;
 		if (this.props.call_over.begin && !this.props.call_over.end) {
-			return this.get_call_over_state()
+      contain = this.get_call_over_state()
 		} else if (!this.props.call_over.begin && !this.props.call_over.end) {
-			return this.get_initial_state()
+      contain = this.get_initial_state()
 		} else if (this.props.call_over.end) {
-			return this.get_final_state()
+      contain = this.get_final_state()
 		}
+    return (
+      <div>
+        {contain}
+        <canvas id="canvas" style={{display:'none'}} width="350" height="350"/>
+      </div>
+
+    )
 	}
 }
 export default connect(mapStateToProps)(CallOver);
