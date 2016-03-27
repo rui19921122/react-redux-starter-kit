@@ -10,7 +10,10 @@ import {getMenu} from '../../redux/modules/menu'
 export default class CustomMenu extends React.Component {
 	constructor(props) {
 		super(props);
-		props.dispatch(getMenu())
+    if (this.props.menu.items.length > 0) {
+    } else {
+      props.dispatch(getMenu())
+    }
 	}
 
 

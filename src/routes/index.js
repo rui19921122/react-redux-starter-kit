@@ -16,6 +16,8 @@ import ManageProfessionalStudy from '../views/ProfessionalStudy/manageProfession
 import ManageAccident from '../views/Accident/manageAccident'
 import Begin from '../views/CallOver/BeginCallOver'
 import CallOver from '../views/CallOver/CallOver'
+import QueryByDepartment from '../views/query/QueryByDepartment'
+import QueryDetail from '../views/query/QueryDetail'
 
 export default(store) =>(
   <Route path='/' component={CoreLayout}>
@@ -28,6 +30,8 @@ export default(store) =>(
     <Route path="/manage-accident" component={ManageAccident}/>
     <Route path="/begin" component={Begin}/>
     <Route path="/call-over" component={CallOver}/>
+    <Route path="/query-department" component={QueryByDepartment}/>
+    <Route path="/query-detail/:id" component={QueryDetail}/>
     <Redirect from='*' to='/404'/>
   </Route>
 )

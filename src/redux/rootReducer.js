@@ -7,6 +7,8 @@ import worker from './modules/worker'
 import study from './modules/professional_study'
 import accident from './modules/accident'
 import call_over from './modules/call-over'
+import query_list from './modules/query_list'
+import query_detail from './modules/query_detail'
 
 export default combineReducers({
   router,
@@ -16,5 +18,7 @@ export default combineReducers({
   worker,
   study,
   accident,
-  call_over
+  call_over,
+  query_list,
+  query_detail
 })

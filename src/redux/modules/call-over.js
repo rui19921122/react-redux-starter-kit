@@ -16,7 +16,7 @@ let update_call_over_data = createAction("UPDATE_CALL_OVER_DATA");
 let can_upload_image = createAction("CAN_UPLOAD_IMAGE");
 let can_upload_audio = createAction("CAN_UPLOAD_AUDIO");
 let begin = createAction("BEGIN");
-let end = createAction("END")
+let end = createAction("END");
 let update_call_over_number = createAction("CALL_OVER_NUMBER");
 export const get_default_class_number = ()=>
 	(dispatch, state) => {
@@ -26,14 +26,13 @@ export const get_default_class_number = ()=>
 				if (response.status == 200) {
 					response.json().then(
 						(json=> {
-							let number = json.number;
-							if (number in [1, 2, 3, 4]) {
-								dispatch(update_class_number(json.number));
-								dispatch(can_begin(true))
-							}
-							if (number == false) {
+              if (json.number == false) {
 								dispatch(can_begin(false))
 							}
+              else {
+                dispatch(update_class_number(json.number));
+                dispatch(can_begin(true))
+              }
 						}))
 				}
 			}
@@ -182,6 +181,7 @@ export default handleActions({
 	unused_cache: [],
 	unused: [],
 	begin: false,
+  can_begin: false,
 	can_upload_image: false,
   can_upload_audio: false,
 	select_visible: false,

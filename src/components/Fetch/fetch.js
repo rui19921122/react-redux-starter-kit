@@ -14,7 +14,7 @@ function _fetch(url, props = {}) {
   ).then(
     response=> {
       switch (response.status) {
-        case 403:
+        case (403 || 401):
           message.error('未登陆或身份认证已过期，即将跳转到登陆界面');
           setTimeout(function () {
             window.location.href = '/login'
